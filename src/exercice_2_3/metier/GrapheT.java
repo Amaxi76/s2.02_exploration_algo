@@ -15,7 +15,8 @@ public class GrapheT
 	
 	private List<Noeud>   lstNoeuds;
 	private List<Arc>     lstArc;
-	private List<Integer> tabRegionVisite;
+	private List<Integer> tabRegionVisiteC1;
+	private List<Integer> tabRegionVisiteC2;
 	
 	/* -------------------------------------- */
 	/*              Constructeur              */
@@ -26,9 +27,10 @@ public class GrapheT
 	 */
 	public GrapheT ( )
 	{
-		this.lstNoeuds       = new ArrayList<> ( );
-		this.lstArc          = new ArrayList<> ( );
-		this.tabRegionVisite = new ArrayList<> ( );
+		this.lstNoeuds         = new ArrayList<> ( );
+		this.lstArc            = new ArrayList<> ( );
+		this.tabRegionVisiteC1 = new ArrayList<> ( );
+		this.tabRegionVisiteC2 = new ArrayList<> ( );
 
 		this.genererGraphe ( );
 	}
@@ -38,9 +40,15 @@ public class GrapheT
 	/* -------------------------------------- */
 
 	/**
-	 * @return le nombre de région visitée
+	 * @return le nombre de région visitée par la couleur C1
 	 */
-	public List<Integer> getRegionvisite  ( ) { return this.tabRegionVisite; }
+	public List<Integer> getRegionvisiteC1  ( ) { return this.tabRegionVisiteC1; }
+
+	/**
+	 * @return le nombre de région visitée par la couleur C2
+	 */
+	public List<Integer> getRegionvisiteC2  ( ) { return this.tabRegionVisiteC2; }
+
 	/**
 	 * @return le nombre d'arc.
 	 */
@@ -70,7 +78,12 @@ public class GrapheT
 	/** Ajouter les régions visitées
 	 * @param rgn région
 	 */
-	public void ajouterRegionvisite ( int rgn ) { this.tabRegionVisite.add ( rgn ); }
+	public void ajouterRegionvisiteC1 ( int rgn ) { this.tabRegionVisiteC1.add ( rgn ); }
+
+	/** Ajouter les régions visitées
+	 * @param rgn région
+	 */
+	public void ajouterRegionvisiteC2 ( int rgn ) { this.tabRegionVisiteC2.add ( rgn ); }
 
 	/** Méthode permettant génerer les noeuds, arrêtes, régions et arc bonus grâce au fichier .data
 	 *
@@ -192,10 +205,26 @@ public class GrapheT
 			arc.getNoeudD ( ).setEstVisite ( );
 			
 			// On ajoute les régions visitées si elles ne sont pas déjà dans la liste
-			if ( !this.tabRegionVisite.contains ( arc.getNoeudA ( ).getRegion ( ) ) )
-				this.tabRegionVisite.add (arc.getNoeudA ( ).getRegion ( ) );
-			if ( !this.tabRegionVisite.contains ( arc.getNoeudD ( ).getRegion ( ) ) )
-				this.tabRegionVisite.add ( arc.getNoeudD ( ).getRegion ( ) );
+			
+			if (couleur == Manche.getTabCouleur()[0])
+			{
+				if ( !this.tabRegionVisiteC1.contains ( arc.getNoeudA ( ).getRegion ( ) ) )
+					this.tabRegionVisiteC1.add (arc.getNoeudA ( ).getRegion ( ) );
+
+				if ( !this.tabRegionVisiteC1.contains ( arc.getNoeudD ( ).getRegion ( ) ) )
+					this.tabRegionVisiteC1.add ( arc.getNoeudD ( ).getRegion ( ) );
+			}
+			
+			if (couleur == Manche.getTabCouleur()[1])
+			{
+				if ( !this.tabRegionVisiteC2.contains ( arc.getNoeudA ( ).getRegion ( ) ) )
+					this.tabRegionVisiteC2.add (arc.getNoeudA ( ).getRegion ( ) );
+
+				if ( !this.tabRegionVisiteC2.contains ( arc.getNoeudD ( ).getRegion ( ) ) )
+					this.tabRegionVisiteC2.add ( arc.getNoeudD ( ).getRegion ( ) );
+			}
+			
+			
 
 			arc.setColorie ( couleur );
 			return true;

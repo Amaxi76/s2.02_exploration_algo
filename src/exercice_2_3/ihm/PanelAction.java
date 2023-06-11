@@ -84,9 +84,10 @@ public class PanelAction extends JPanel implements ActionListener,KeyListener
 			{
 				String sRet = "";
 
-				sRet += "Nb regions visitées : " + this.ctrl.getNbRegionsVisite ( ) + "\n";
-				sRet += "Nb arcs colorées    : " + this.ctrl.getNbArcsColorie   ( ) + "\n";
-				sRet += "Nb Points Total     : " + this.ctrl.calculPoints       ( );
+				sRet += "Nb regions visitées C1 : " + this.ctrl.getNbRegionsVisiteC1 ( ) + "\n";
+				sRet += "Nb regions visitées C2 : " + this.ctrl.getNbRegionsVisiteC2 ( ) + "\n";
+				sRet += "Nb arcs colorées       : " + this.ctrl.getNbArcsColorie   ( ) + "\n";
+				sRet += "Nb Points Total        : " + this.ctrl.calculPoints       ( );
 
 				//Création d'une "Pop-up" pour demander si le joueur veux rejouer ou quitter
 				Object[] choix= { "Rejouer","Quitter" };

@@ -61,8 +61,9 @@ public class Controleur
 	/** Getteur qui retourne le nombre de régions visitées
 	 * @return nombre de régions visitées
 	 */
-	public int   getNbRegionsVisite ( ) { return this.metier.getRegionvisite ( ).size ( ); }
-	
+	public int   getNbRegionsVisiteC1 ( ) { return this.metier.getRegionvisiteC1 ( ).size ( ); }
+
+	public int   getNbRegionsVisiteC2 ( ) { return this.metier.getRegionvisiteC2 ( ).size ( ); }	
 	/** Getteur qui retourne le nombre d'arcs coloriés
 	 * @return nombre d'arcs coloriés
 	 */
@@ -113,36 +114,86 @@ public class Controleur
 	 */
 	public int calculPoints ( )
 	{
-		int points = 0;
+		int pointsC1 = 0;
+		int pointsC2 = 0;
+
+		Color c1 = this.manche.getTabCouleur()[0];
+		Color c2 = this.manche.getTabCouleur()[1];
 
 		for ( Arc arc : this.metier.getArcs ( ) )
-			if ( arc.getEstColorie ( ) )
-				points += arc.getValeur ( );
-		
-		points += this.getNbNoeudMaxVisiteParRegion ( ) * this.metier.getRegionvisite ( ).size ( );
+			if ( arc.getEstColorie ( ) && arc.getColorArc() == c1)
+				pointsC1 += arc.getValeur ( );
 
-		return points;
+		for ( Arc arc : this.metier.getArcs ( ) )
+			if ( arc.getEstColorie ( ) && arc.getColorArc() == c2)
+				pointsC2 += arc.getValeur ( );
+
+		
+		
+		pointsC1 += this.getNbNoeudMaxVisiteParRegion (c1) * this.metier.getRegionvisiteC1 ().size ( );
+		pointsC1 += this.getNbNoeudMaxVisiteParRegion (c2) * this.metier.getRegionvisiteC2 ().size ( );
+
+		System.out.println (this.getNbNoeudMaxVisiteParRegion (c1) + " " + this.getNbNoeudMaxVisiteParRegion (c2));
+
+
+		return pointsC1 + pointsC2;
 	}
 
 	/** Méthode qui permet de calculer le nombre de noeuds maximum visité par région
 	 * @return int (le nombre de noeuds maximum visité par région)
 	 */
-	public int getNbNoeudMaxVisiteParRegion() 
+	public int getNbNoeudMaxVisiteParRegion(Color c) 
 	{
 		int max = 0;
 
-		for ( int r : this.metier.getRegionvisite ( ) )
+		if (c == this.manche.getTabCouleur()[0])
 		{
-			int nbPoint = 0;
+			for (int rgn : this.metier.getRegionvisiteC1())
+			{
+				int nbMax = 0;
+				for (Noeud n : this.metier.getNoeuds())
+				{
+					if (n.getEstVisite() && n.getRegion() == rgn)
+					{
+						for (Arc a : n.getLstArc())
+						{
+							if (a.getColorArc() == c)
+							{
+								nbMax++;
+								break;
+							}
+						}
+					}
+				}
 
-			for ( Noeud n : this.metier.getNoeuds ( ) )
-				if ( n.getEstVisite ( ) && n.getRegion ( ) == r)
-					nbPoint++;
-
-			if ( max < nbPoint )
-				max = nbPoint;
+				if (max < nbMax) {max = nbMax;}
+			}
+			
 		}
+		else
+		{
+			for (int rgn : this.metier.getRegionvisiteC2())
+			{
+				int nbMax = 0;
+				for (Noeud n : this.metier.getNoeuds())
+				{
+					if (n.getEstVisite() && n.getRegion() == rgn)
+					{
+						for (Arc a : n.getLstArc())
+						{
+							if (a.getColorArc() == c)
+							{
+								nbMax++;
+								break;
+							}
+						}
+					}
+				}
 
+				if (max < nbMax) {max = nbMax;}
+			}
+		}
+		
 		return max;
 	}
 }

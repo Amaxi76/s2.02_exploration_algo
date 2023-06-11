@@ -65,6 +65,8 @@ public class Manche
 	 * @return la couleur du joueur (Color)
 	 */
 	public Color getCouleur   ( ) { return this.couleur;   }
+
+	public static Color[] getTabCouleur ( ) { return Manche.couleursJouer; }
 	
 	/* -------------------------------------- */
 	/*                 Setteur                */
